@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATH1131 — Study Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap');
+
+  :root {
+    --bg: #0a0a12;
+    --card: #12121f;
+    --border: #1e1e35;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --math: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1a0533 0%, #0a1628 50%, #001a1a 100%);
+    padding: 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% -20%, rgba(124,58,237,0.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, #a78bfa, #06b6d4, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+  .header p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    position: relative;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.2);
+    border: 1px solid var(--accent);
+    color: #a78bfa;
+    padding: 0.2rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+
+  /* LAYOUT */
+  .container { display: flex; min-height: calc(100vh - 140px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+    position: sticky;
+    top: 0;
+  }
+  .sidebar-section { margin-bottom: 1.5rem; }
+  .sidebar-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .nav-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--text);
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-btn:hover { background: rgba(124,58,237,0.15); color: #a78bfa; }
+  .nav-btn.active { background: rgba(124,58,237,0.25); color: #a78bfa; border-left: 3px solid var(--accent); }
+  .nav-btn .emoji { margin-right: 0.5rem; }
+  .progress-bar-wrap { background: var(--border); border-radius: 999px; height: 6px; margin-top: 0.3rem; margin-left: 0.8rem; }
+  .progress-bar { background: var(--green); border-radius: 999px; height: 6px; transition: width 0.5s; }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+  }
+
+  /* TOPIC CARD */
+  .topic { display: none; }
+  .topic.active { display: block; }
+
+  .topic-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .topic-icon {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+  .topic-title { font-size: 1.8rem; font-weight: 800; }
+  .topic-subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 0.2rem; }
+
+  /* CONCEPT BOX */
+  .concept-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .concept-box h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* MATH DISPLAY */
+  .math-block {
+    background: #0d0d1a;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 0.8rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--math);
+    overflow-x: auto;
+  }
+  .math-inline {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--math);
+    background: rgba(124,58,237,0.1);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+
+  /* STEP BOX */
+  .steps {
+    counter-reset: step;
+    margin: 1rem 0;
+  }
+  .step {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: start;
+  }
+  .step-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .step-content {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+  }
+  .step-content p { font-size: 0.95rem; line-height: 1.6; }
+
+  /* EXAMPLE WORKED */
+  .example-card {
+    border: 1px solid var(--accent3);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .example-header {
+    background: rgba(245,158,11,0.15);
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    color: var(--accent3);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .example-body { padding: 1.2rem; }
+  .example-question {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent3);
+  }
+
+  /* QUIZ */
+  .quiz-section {
+    background: linear-gradient(135deg, rgba(16,185,129,0.05), rgba(6,182,212,0.05));
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+  .quiz-section h3 {
+    color: var(--green);
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .quiz-question {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .quiz-question p { margin-bottom: 0.8rem; font-size: 0.95rem; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-align: left;
+    transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .quiz-opt:hover { border-color: var(--accent2); background: rgba(6,182,212,0.08); }
+  .quiz-opt.correct { background: rgba(16,185,129,0.15); border-color: var(--green); color: #6ee7b7; }
+  .quiz-opt.wrong { background: rgba(239,68,68,0.15); border-color: var(--red); color: #fca5a5; }
+  .quiz-opt.disabled { cursor: not-allowed; opacity: 0.7; }
+  .quiz-feedback {
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+  .quiz-feedback.wrong { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+
+  /* VIDEO LINK */
+  .video-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    text-decoration: none;
+    color: #fca5a5;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .video-link:hover { background: rgba(239,68,68,0.2); }
+  .video-icon { font-size: 1.5rem; }
+  .video-text { font-size: 0.9rem; font-weight: 600; }
+  .video-sub { font-size: 0.8rem; color: var(--muted); }
+
+  /* TIP BOX */
+  .tip-box {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+    color: #fcd34d;
+  }
+  .tip-box strong { color: var(--accent3); }
+
+  /* FORMULA GRID */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.8rem;
+    margin: 1rem 0;
+  }
+  .formula-card {
+    background: #0d0d1a;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+  .formula-card .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .formula-card .formula { font-family: 'JetBrains Mono', monospace; color: var(--math); font-size: 0.95rem; }
+
+  /* PROGRESS TRACKER */
+  .progress-tracker {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-ring { position: relative; width: 60px; height: 60px; flex-shrink: 0; }
+  .progress-ring svg { transform: rotate(-90deg); }
+  .progress-ring-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--green);
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.3rem;
+  }
+  .tag-algebra { background: rgba(124,58,237,0.2); color: #a78bfa; border: 1px solid rgba(124,58,237,0.4); }
+  .tag-calculus { background: rgba(6,182,212,0.2); color: #67e8f9; border: 1px solid rgba(6,182,212,0.4); }
+  .tag-exam { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid rgba(245,158,11,0.4); }
+
+  /* MOBILE */
+  @media(max-width: 768px) {
+    .container { flex-direction: column; }
+    .sidebar { width: 100%; min-width: unset; max-height: 200px; position: static; }
+    .main { max-height: unset; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+  .big-formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    color: var(--math);
+    text-align: center;
+    padding: 1.5rem;
+    background: #0d0d1a;
+    border: 2px solid rgba(124,58,237,0.4);
+    border-radius: 12px;
+    margin: 1rem 0;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media(max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MATH1131 — Study Guide</h1>
+  <p>Step-by-step · Examples first · Self-check quizzes</p>
+  <span class="badge">ADHD-Friendly · Zero to Full Marks</span>
+</div>
+
+<div class="container">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">📐 Algebra</div>
+      <button class="nav-btn active" onclick="show('vectors')"><span class="emoji">🧭</span>Vectors</button>
+      <button class="nav-btn" onclick="show('vector-geometry')"><span class="emoji">📏</span>Vector Geometry</button>
+      <button class="nav-btn" onclick="show('complex')"><span class="emoji">🌀</span>Complex Numbers</button>
+      <button class="nav-btn" onclick="show('matrices')"><span class="emoji">🔢</span>Matrices & Systems</button>
+      <button class="nav-btn" onclick="show('determinants')"><span class="emoji">🎯</span>Determinants & Inverses</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">∫ Calculus</div>
+      <button class="nav-btn" onclick="show('limits')"><span class="emoji">→</span>Limits</button>
+      <button class="nav-btn" onclick="show('continuity')"><span class="emoji">〰️</span>Continuity & IVT</button>
+      <button class="nav-btn" onclick="show('differentiation')"><span class="emoji">📈</span>Differentiation</button>
+      <button class="nav-btn" onclick="show('mvt')"><span class="emoji">⚖️</span>Mean Value Theorem</button>
+      <button class="nav-btn" onclick="show('inverse-fn')"><span class="emoji">↩️</span>Inverse Functions</button>
+      <button class="nav-btn" onclick="show('curve-sketch')"><span class="emoji">✏️</span>Curve Sketching</button>
+      <button class="nav-btn" onclick="show('integration')"><span class="emoji">∫</span>Integration</button>
+      <button class="nav-btn" onclick="show('log-exp')"><span class="emoji">📊</span>Log & Exponentials</button>
+      <button class="nav-btn" onclick="show('hyperbolic')"><span class="emoji">🔀</span>Hyperbolic Functions</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">🎓 Exam Prep</div>
+      <button class="nav-btn" onclick="show('exam-tips')"><span class="emoji">⭐</span>Exam Tips & Tricks</button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ===== VECTORS ===== -->
+    <div class="topic active" id="topic-vectors">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(124,58,237,0.2);">🧭</div>
+        <div>
+          <div class="topic-title">Vectors</div>
+          <div class="topic-subtitle"><span class="tag tag-algebra">Algebra Ch.1</span> Introduction to vectors in 2D and 3D</div>
+        </div>
+      </div>
+
+      <!-- CONCEPT: What is a vector -->
+      <div class="concept-box">
+        <h3>💡 What is a Vector?</h3>
+        <div class="two-col">
+          <div>
+            <div class="math-block">
+              Scalar = just a number (e.g. 5)<br>
+              Vector = number + direction<br><br>
+              In 2D: v = (3, 4)<br>
+              In 3D: v = (1, 2, -3)
+            </div>
+          </div>
+          <div style="background:#0d0d1a;border:1px solid #2a2a4a;border-radius:8px;padding:1rem;display:flex;align-items:center;justify-content:center;">
+            <svg width="160" height="140" viewBox="0 0 160 140">
+              <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/></marker>
+              <marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#64748b"/></marker></defs>
+              <!-- axes -->
+              <line x1="20" y1="120" x2="150" y2="120" stroke="#333" stroke-width="1.5" marker-end="url(#ah2)"/>
+              <line x1="20" y1="120" x2="20" y2="10" stroke="#333" stroke-width="1.5" marker-end="url(#ah2)"/>
+              <text x="153" y="123" fill="#64748b" font-size="11">x</text>
+              <text x="15" y="8" fill="#64748b" font-size="11">y</text>
+              <!-- vector -->
+              <line x1="20" y1="120" x2="100" y2="50" stroke="#a78bfa" stroke-width="2.5" marker-end="url(#ah)"/>
+              <text x="58" y="80" fill="#a78bfa" font-size="12" font-family="monospace">(3,4)</text>
+              <!-- dotted projections -->
+              <line x1="20" y1="50" x2="100" y2="50" stroke="#333" stroke-dasharray="4" stroke-width="1"/>
+              <line x1="100" y1="120" x2="100" y2="50" stroke="#333" stroke-dasharray="4" stroke-width="1"/>
+              <text x="55" y="135" fill="#64748b" font-size="10">3</text>
+              <text x="105" y="90" fill="#64748b" font-size="10">4</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONCEPT: Vector Operations -->
+      <div class="concept-box">
+        <h3>⚙️ Vector Operations</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">+</div>
+            <div class="step-content">
+              <p><strong>Addition:</strong> add component by component</p>
+              <div class="math-block">(1,2,3) + (4,5,6) = (1+4, 2+5, 3+6) = (5,7,9)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">×</div>
+            <div class="step-content">
+              <p><strong>Scalar Multiplication:</strong> multiply every component</p>
+              <div class="math-block">3 × (1,2,3) = (3,6,9)</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">|v|</div>
+            <div class="step-content">
+              <p><strong>Length (Magnitude):</strong></p>
+              <div class="math-block">|v| = √(x² + y² + z²)<br>|(3,4)| = √(9+16) = √25 = 5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORKED EXAMPLE -->
+      <div class="example-card">
+        <div class="example-header">📝 Worked Example — Find the length & unit vector</div>
+        <div class="example-body">
+          <div class="example-question">Given <span class="math-inline">v = (1, -2, 2)</span>, find |v| and the unit vector û.</div>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><p>Find the length:</p><div class="math-block">|v| = √(1² + (-2)² + 2²) = √(1+4+4) = √9 = 3</div></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><p>Unit vector = vector ÷ its length:</p><div class="math-block">û = (1/3)(1,-2,2) = (1/3, -2/3, 2/3)</div></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content"><p>Check: |û| should = 1</p><div class="math-block">|(1/3,-2/3,2/3)| = √(1/9+4/9+4/9) = √(9/9) = 1 ✓</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARAMETRIC LINES -->
+      <div class="concept-box">
+        <h3>📐 Parametric Equation of a Line</h3>
+        <div class="tip-box"><strong>Key idea:</strong> A line = starting point + t × direction</div>
+        <div class="big-formula">r(t) = a + t·d</div>
+        <div class="math-block">
+          a = point on the line<br>
+          d = direction vector<br>
+          t = any real number (the parameter)
+        </div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Line through (1,2,3) in direction (1,0,-1)</div>
+          <div class="example-body">
+            <div class="math-block">r(t) = (1,2,3) + t(1,0,-1)<br>     = (1+t, 2, 3-t)</div>
+            <p style="margin-top:0.5rem;font-size:0.9rem;color:var(--muted)">At t=0: point (1,2,3). At t=1: point (2,2,2). At t=-1: point (0,2,4).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEO LINKS -->
+      <div onclick="window.open('https://www.youtube.com/results?search_query=vectors+introduction+3blue1brown','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Vectors Introduction</div><div class="video-sub">3Blue1Brown — Essence of Linear Algebra Ep.1</div></div>
+      </div>
+      <div onclick="window.open('https://www.youtube.com/results?search_query=parametric+equations+lines+vectors','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Parametric Lines</div><div class="video-sub">Khan Academy — Vectors and parametric lines</div></div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="quiz-section">
+        <h3>✅ Self Check — Vectors</h3>
+
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is |(2, -1, 2)|?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">√3</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">3</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">5</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">9</button>
+          </div>
+          <div class="quiz-feedback correct">✓ √(4+1+4) = √9 = 3</div>
+          <div class="quiz-feedback wrong">✗ Remember: |v| = √(x²+y²+z²) = √(4+1+4) = √9 = 3</div>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> If <span class="math-inline">u = (1,2)</span> and <span class="math-inline">v = (3,-1)</span>, what is <span class="math-inline">2u - v</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(5,3)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(1,5)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">(−1, 5)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(4,1)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 2(1,2)-(3,-1) = (2,4)-(3,-1) = (-1,5)</div>
+          <div class="quiz-feedback wrong">✗ 2u = (2,4). Then (2,4)-(3,-1) = (-1,5)</div>
+        </div>
+
+        <div class="quiz-question">
+          <p><strong>Q3.</strong> A line passes through <span class="math-inline">(0,1,2)</span> with direction <span class="math-inline">(1,1,0)</span>. What is the point at <span class="math-inline">t=3</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(3,3,2)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">(3,4,2)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(1,4,2)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">(3,3,0)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ r(3) = (0,1,2)+3(1,1,0) = (3,4,2)</div>
+          <div class="quiz-feedback wrong">✗ r(t) = a+td. So r(3) = (0+3, 1+3, 2+0) = (3,4,2)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VECTOR GEOMETRY ===== -->
+    <div class="topic" id="topic-vector-geometry">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(6,182,212,0.2);">📏</div>
+        <div>
+          <div class="topic-title">Vector Geometry</div>
+          <div class="topic-subtitle"><span class="tag tag-algebra">Algebra Ch.2</span> Dot product, cross product, planes</div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🔵 Dot Product</h3>
+        <div class="big-formula">a · b = a₁b₁ + a₂b₂ + a₃b₃ = |a||b|cos(θ)</div>
+        <div class="tip-box"><strong>Key uses:</strong> find angle between vectors, check if perpendicular (dot = 0)</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Angle between two vectors</div>
+          <div class="example-body">
+            <div class="example-question">Find the angle between <span class="math-inline">a=(1,0,1)</span> and <span class="math-inline">b=(0,1,1)</span></div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Compute dot product:</p><div class="math-block">a·b = 1×0 + 0×1 + 1×1 = 1</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><p>Find magnitudes:</p><div class="math-block">|a| = √(1+0+1) = √2,  |b| = √(0+1+1) = √2</div></div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-content"><p>Use formula:</p><div class="math-block">cos(θ) = 1/(√2·√2) = 1/2  →  θ = 60°</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>❌ Cross Product (3D only)</h3>
+        <div class="math-block">
+          a × b = | i    j    k  |<br>
+                  | a₁   a₂   a₃ |<br>
+                  | b₁   b₂   b₃ |<br><br>
+          Result = vector perpendicular to BOTH a and b<br>
+          |a × b| = |a||b|sin(θ) = area of parallelogram
+        </div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Cross Product</div>
+          <div class="example-body">
+            <div class="example-question"><span class="math-inline">(1,0,0) × (0,1,0) = ?</span></div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content">
+                <div class="math-block">i component: (0×0 - 0×1) = 0<br>j component: -(1×0 - 0×0) = 0<br>k component: (1×1 - 0×0) = 1</div>
+              </div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content">
+                <div class="math-block">Answer = (0, 0, 1) = k direction ✓</div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🟥 Equation of a Plane</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Normal form</div><div class="formula">n · (r - a) = 0</div></div>
+          <div class="formula-card"><div class="label">Cartesian form</div><div class="formula">ax + by + cz = d</div></div>
+          <div class="formula-card"><div class="label">n = normal vector</div><div class="formula">n = (a, b, c)</div></div>
+        </div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Plane through (1,2,3) with normal (1,1,1)</div>
+          <div class="example-body">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><div class="math-block">n·(r-a) = 0<br>(1,1,1)·(x-1, y-2, z-3) = 0</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><div class="math-block">(x-1) + (y-2) + (z-3) = 0<br>x + y + z = 6</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="window.open('https://www.youtube.com/results?search_query=dot+product+cross+product+explained','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Dot & Cross Products</div><div class="video-sub">3Blue1Brown — visual explanation</div></div>
+      </div>
+
+      <div class="quiz-section">
+        <h3>✅ Self Check — Vector Geometry</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> <span class="math-inline">a=(1,2,0)</span>, <span class="math-inline">b=(0,1,0)</span>. What is <span class="math-inline">a·b</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">2</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">3</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">0</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 1×0 + 2×1 + 0×0 = 2</div>
+          <div class="quiz-feedback wrong">✗ a·b = 1×0 + 2×1 + 0×0 = 2</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> Two vectors are perpendicular when their dot product is...</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">0</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-1</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">equal to their magnitudes</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Perpendicular means cos(90°)=0, so a·b = |a||b|cos(90°) = 0</div>
+          <div class="quiz-feedback wrong">✗ Perpendicular → angle = 90° → cos(90°) = 0 → dot product = 0</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q3.</strong> Find the Cartesian equation of the plane with normal <span class="math-inline">(2,1,-1)</span> passing through <span class="math-inline">(0,0,4)</span>.</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2x + y - z = 0</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">2x + y - z = -4</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2x + y - z = 4</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">x + y - z = 4</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 2(x-0)+1(y-0)-1(z-4)=0 → 2x+y-z+4=0 → 2x+y-z = -4</div>
+          <div class="quiz-feedback wrong">✗ n·(r-a)=0: 2(x-0)+1(y-0)-1(z-4)=0 → 2x+y-z=-4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COMPLEX NUMBERS ===== -->
+    <div class="topic" id="topic-complex">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(245,158,11,0.2);">🌀</div>
+        <div>
+          <div class="topic-title">Complex Numbers</div>
+          <div class="topic-subtitle"><span class="tag tag-algebra">Algebra Ch.3</span> i, polar form, De Moivre's theorem</div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>💡 The Big Idea</h3>
+        <div class="math-block">i = √(-1)   so   i² = -1<br><br>Complex number: z = a + bi<br>  a = real part<br>  b = imaginary part</div>
+        <div class="tip-box"><strong>Think of it as a 2D point:</strong> plot a on x-axis, b on y-axis (Argand diagram)</div>
+      </div>
+
+      <div class="concept-box">
+        <h3>⚙️ Arithmetic</h3>
+        <div class="steps">
+          <div class="step"><div class="step-num">+</div><div class="step-content"><div class="math-block">(3+2i) + (1-i) = 4 + i</div></div></div>
+          <div class="step"><div class="step-num">×</div><div class="step-content">
+            <div class="math-block">(2+i)(3-i) = 6 - 2i + 3i - i²<br>           = 6 + i - (-1) = 7 + i</div>
+          </div></div>
+          <div class="step"><div class="step-num">÷</div><div class="step-content">
+            <p>Multiply top & bottom by the conjugate of denominator</p>
+            <div class="math-block">1/(2+i) = (2-i)/((2+i)(2-i)) = (2-i)/(4+1) = (2-i)/5</div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🎯 Polar Form</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Modulus</div><div class="formula">|z| = √(a²+b²)</div></div>
+          <div class="formula-card"><div class="label">Argument</div><div class="formula">θ = arg(z) = atan(b/a)</div></div>
+          <div class="formula-card"><div class="label">Polar form</div><div class="formula">z = r(cos θ + i sin θ)</div></div>
+          <div class="formula-card"><div class="label">Euler's formula</div><div class="formula">z = re^(iθ)</div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🚀 De Moivre's Theorem</h3>
+        <div class="big-formula">(cos θ + i sin θ)ⁿ = cos(nθ) + i sin(nθ)</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Find (1+i)⁸</div>
+          <div class="example-body">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Convert to polar:</p><div class="math-block">|1+i| = √2,  θ = π/4<br>So 1+i = √2 · e^(iπ/4)</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><p>Apply power:</p><div class="math-block">(1+i)⁸ = (√2)⁸ · e^(i·8·π/4)<br>       = 16 · e^(i·2π)<br>       = 16 · (1 + 0i) = 16</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="window.open('https://www.youtube.com/results?search_query=complex+numbers+polar+form+de+moivre','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Complex Numbers & Polar Form</div><div class="video-sub">3Blue1Brown — e to the i pi</div></div>
+      </div>
+
+      <div class="quiz-section">
+        <h3>✅ Self Check — Complex Numbers</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">(2+3i)(1-i)</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2 - 3i</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">5 + i</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2 + 3i</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-1 + 5i</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 2-2i+3i-3i² = 2+i+3 = 5+i</div>
+          <div class="quiz-feedback wrong">✗ Expand: 2(1)+2(-i)+3i(1)+3i(-i) = 2-2i+3i-3i² = 2+i+3 = 5+i</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> What is |3 + 4i|?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">7</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">5</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">√7</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">25</button>
+          </div>
+          <div class="quiz-feedback correct">✓ √(9+16) = √25 = 5</div>
+          <div class="quiz-feedback wrong">✗ |a+bi| = √(a²+b²) = √(9+16) = 5</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q3.</strong> What is <span class="math-inline">i⁴</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">i</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-1</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-i</button>
+          </div>
+          <div class="quiz-feedback correct">✓ i¹=i, i²=-1, i³=-i, i⁴=1. Cycles every 4!</div>
+          <div class="quiz-feedback wrong">✗ i⁴ = (i²)² = (-1)² = 1. Powers of i cycle: i,-1,-i,1,i,-1,...)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MATRICES ===== -->
+    <div class="topic" id="topic-matrices">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(16,185,129,0.2);">🔢</div>
+        <div>
+          <div class="topic-title">Matrices & Systems</div>
+          <div class="topic-subtitle"><span class="tag tag-algebra">Algebra Ch.4-5</span> Gaussian elimination, solving Ax=b</div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>💡 What is a Matrix?</h3>
+        <div class="math-block">
+          A matrix is a grid of numbers.<br><br>
+          A = | 1  2  3 |   ← row 1<br>
+              | 4  5  6 |   ← row 2<br><br>
+          This is a 2×3 matrix (2 rows, 3 columns)
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🔄 Gaussian Elimination</h3>
+        <div class="tip-box"><strong>Goal:</strong> Turn the augmented matrix into row echelon form, then back-substitute</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Solve the system</div>
+          <div class="example-body">
+            <div class="example-question">
+              <div class="math-block">x + 2y = 5<br>3x + 5y = 12</div>
+            </div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Write augmented matrix:</p><div class="math-block">| 1  2 | 5  |<br>| 3  5 | 12 |</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><p>R2 = R2 - 3×R1:</p><div class="math-block">| 1  2 | 5  |<br>| 0 -1 | -3 |</div></div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-content"><p>Row 2 gives: -y = -3 → y = 3</p><div class="math-block">y = 3</div></div></div>
+              <div class="step"><div class="step-num">4</div><div class="step-content"><p>Back substitute into Row 1:</p><div class="math-block">x + 2(3) = 5 → x = -1</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>⚙️ Matrix Multiplication</h3>
+        <div class="tip-box"><strong>Rule:</strong> Row of A · Column of B. Number of columns in A must equal rows in B.</div>
+        <div class="math-block">
+          | 1  2 |   | 5  6 |   | 1×5+2×7   1×6+2×8 |   | 19  22 |<br>
+          | 3  4 | × | 7  8 | = | 3×5+4×7   3×6+4×8 | = | 43  50 |
+        </div>
+      </div>
+
+      <div onclick="window.open('https://www.youtube.com/results?search_query=gaussian+elimination+tutorial','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Gaussian Elimination</div><div class="video-sub">Step by step visual tutorial</div></div>
+      </div>
+
+      <div class="quiz-section">
+        <h3>✅ Self Check — Matrices</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> Solve: <span class="math-inline">x + y = 3</span> and <span class="math-inline">2x + y = 5</span>. What is x?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">2</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">3</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">0</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Subtract eq1 from eq2: x = 2. Then y = 1.</div>
+          <div class="quiz-feedback wrong">✗ R2-R1: (2x+y)-(x+y) = 5-3 → x = 2</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> Which row operation is valid in Gaussian elimination?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Multiply two rows together</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">Replace a row with itself minus a multiple of another row</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Delete any row you don't like</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Add a constant to all entries</button>
+          </div>
+          <div class="quiz-feedback correct">✓ The 3 valid ops: swap rows, scale a row, add multiple of one row to another.</div>
+          <div class="quiz-feedback wrong">✗ Only 3 valid row ops: swap rows / scale a row / Ri = Ri - k·Rj</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DETERMINANTS ===== -->
+    <div class="topic" id="topic-determinants">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(239,68,68,0.2);">🎯</div>
+        <div>
+          <div class="topic-title">Determinants & Inverses</div>
+          <div class="topic-subtitle"><span class="tag tag-algebra">Algebra Ch.5</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>🔢 2×2 Determinant</h3>
+        <div class="big-formula">det|a b; c d| = ad - bc</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example</div>
+          <div class="example-body">
+            <div class="math-block">det| 3  2 | = 3×4 - 2×1 = 12 - 2 = 10<br>   | 1  4 |</div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>↩️ 2×2 Inverse</h3>
+        <div class="math-block">
+          If A = | a  b |,  then A⁻¹ = (1/det(A)) | d  -b |<br>
+                 | c  d |                           | -c   a |
+        </div>
+        <div class="tip-box"><strong>Key:</strong> If det(A) = 0, the inverse does NOT exist (singular matrix)</div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check — Determinants</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is det| 2  3 |?</p>
+          <p style="font-family:monospace;margin-left:1rem;">             | 1  4 |</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">11</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">5</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-5</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">14</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 2×4 - 3×1 = 8 - 3 = 5</div>
+          <div class="quiz-feedback wrong">✗ det = ad - bc = 2×4 - 3×1 = 5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LIMITS ===== -->
+    <div class="topic" id="topic-limits">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(6,182,212,0.2);">→</div>
+        <div>
+          <div class="topic-title">Limits</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.2</span></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>💡 What is a Limit?</h3>
+        <div class="tip-box"><strong>Think:</strong> "What value does f(x) APPROACH as x gets close to a?"</div>
+        <div class="math-block">lim(x→2) x² = 4   (just plug in x=2)</div>
+        <div class="math-block">
+          lim(x→0) sin(x)/x = 1   ← this is famous! Can't plug in 0 directly.
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>📏 Limit Rules</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Sum</div><div class="formula">lim(f+g) = lim(f) + lim(g)</div></div>
+          <div class="formula-card"><div class="label">Product</div><div class="formula">lim(fg) = lim(f)·lim(g)</div></div>
+          <div class="formula-card"><div class="label">Quotient</div><div class="formula">lim(f/g) = lim(f)/lim(g)  if lim(g)≠0</div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>♾️ Limits at Infinity</h3>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Rational function limit</div>
+          <div class="example-body">
+            <div class="example-question">Find <span class="math-inline">lim(x→∞) (3x²+1)/(x²+2)</span></div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Divide everything by highest power (x²):</p><div class="math-block">(3 + 1/x²)/(1 + 2/x²)</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><p>As x→∞, 1/x²→0:</p><div class="math-block">= (3+0)/(1+0) = 3</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="window.open('https://www.youtube.com/results?search_query=limits+introduction+calculus+3blue1brown','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Limits Introduction</div><div class="video-sub">3Blue1Brown / Khan Academy</div></div>
+      </div>
+
+      <div class="quiz-section">
+        <h3>✅ Self Check — Limits</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">lim(x→3) (x²-9)/(x-3)</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">0</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">undefined</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">6</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">9</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Factor: (x²-9)/(x-3) = (x+3)(x-3)/(x-3) = x+3 → 3+3 = 6</div>
+          <div class="quiz-feedback wrong">✗ Factor numerator: x²-9 = (x+3)(x-3). Cancel (x-3). Left with x+3. At x=3: 6</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> <span class="math-inline">lim(x→∞) 5/x = ?</span></p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">5</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">∞</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">0</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-∞</button>
+          </div>
+          <div class="quiz-feedback correct">✓ As x grows huge, 5/x shrinks to 0.</div>
+          <div class="quiz-feedback wrong">✗ As x→∞, dividing by a huge number → 0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONTINUITY ===== -->
+    <div class="topic" id="topic-continuity">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(16,185,129,0.2);">〰️</div>
+        <div>
+          <div class="topic-title">Continuity & IVT</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.3</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Continuity</h3>
+        <div class="tip-box"><strong>Simple check:</strong> f is continuous at x=a if you can draw it without lifting your pen at that point</div>
+        <div class="math-block">Formal: f continuous at a if  lim(x→a) f(x) = f(a)</div>
+      </div>
+      <div class="concept-box">
+        <h3>🌉 Intermediate Value Theorem (IVT)</h3>
+        <div class="tip-box"><strong>Plain English:</strong> If a continuous function goes from negative to positive (or vice versa), it must cross zero somewhere in between</div>
+        <div class="big-formula">f(a) < 0 < f(b)  →  ∃c in (a,b) where f(c) = 0</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — Show a root exists</div>
+          <div class="example-body">
+            <div class="example-question">Show x³ - x - 1 = 0 has a root in [1, 2]</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><div class="math-block">f(1) = 1 - 1 - 1 = -1  (negative)</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><div class="math-block">f(2) = 8 - 2 - 1 = 5  (positive)</div></div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-content"><p>f is continuous (polynomial), f(1)&lt;0&lt;f(2), so by IVT there exists c∈(1,2) where f(c)=0 ✓</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check — Continuity & IVT</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> Does f(x) = x² - 3 have a root in [1, 2]? (Use IVT)</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'correct')">Yes — f(1)=-2 &lt; 0 and f(2)=1 &gt; 0</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">No — x² - 3 has no roots</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Cannot determine</button>
+          </div>
+          <div class="quiz-feedback correct">✓ f(1)=-2 < 0, f(2)=1 > 0, f is continuous → root exists in (1,2) which is √3 ≈ 1.73</div>
+          <div class="quiz-feedback wrong">✗ f(1) = 1-3 = -2 (negative). f(2) = 4-3 = 1 (positive). By IVT, a root exists!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DIFFERENTIATION ===== -->
+    <div class="topic" id="topic-differentiation">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(124,58,237,0.2);">📈</div>
+        <div>
+          <div class="topic-title">Differentiation</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.4</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Key Rules</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Power Rule</div><div class="formula">d/dx [xⁿ] = nxⁿ⁻¹</div></div>
+          <div class="formula-card"><div class="label">Product Rule</div><div class="formula">d/dx [fg] = f'g + fg'</div></div>
+          <div class="formula-card"><div class="label">Quotient Rule</div><div class="formula">d/dx [f/g] = (f'g-fg')/g²</div></div>
+          <div class="formula-card"><div class="label">Chain Rule</div><div class="formula">d/dx [f(g(x))] = f'(g(x))·g'(x)</div></div>
+          <div class="formula-card"><div class="label">sin</div><div class="formula">d/dx [sin x] = cos x</div></div>
+          <div class="formula-card"><div class="label">cos</div><div class="formula">d/dx [cos x] = -sin x</div></div>
+          <div class="formula-card"><div class="label">eˣ</div><div class="formula">d/dx [eˣ] = eˣ</div></div>
+          <div class="formula-card"><div class="label">ln x</div><div class="formula">d/dx [ln x] = 1/x</div></div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-header">📝 Chain Rule Example</div>
+        <div class="example-body">
+          <div class="example-question">Differentiate <span class="math-inline">f(x) = sin(x²)</span></div>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><p>Outer function: sin(u), derivative = cos(u)</p></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><p>Inner function: u = x², derivative = 2x</p></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content"><div class="math-block">f'(x) = cos(x²) · 2x = 2x·cos(x²)</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-header">📝 Implicit Differentiation</div>
+        <div class="example-body">
+          <div class="example-question">Find dy/dx for <span class="math-inline">x² + y² = 25</span></div>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><p>Differentiate both sides w.r.t. x (y is a function of x):</p><div class="math-block">2x + 2y·(dy/dx) = 0</div></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><div class="math-block">dy/dx = -x/y</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div onclick="window.open('https://www.youtube.com/results?search_query=derivative+rules+chain+rule+explained','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Derivative Rules</div><div class="video-sub">Khan Academy — Power, Product, Chain rules</div></div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check — Differentiation</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">d/dx [x⁴ + 3x² - 7]</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">4x³ + 3x</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">4x³ + 6x</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">x⁵/5 + x³ - 7x</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">4x⁴ + 6x²</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Power rule: 4x³ + 6x + 0</div>
+          <div class="quiz-feedback wrong">✗ d/dx[x⁴]=4x³, d/dx[3x²]=6x, d/dx[-7]=0. Answer: 4x³+6x</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> What is <span class="math-inline">d/dx [e^(3x)]</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">e^(3x)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">3e^(3x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">3x·e^(3x-1)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">e^(3)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Chain rule: outer=eˣ → eˣ, inner=3x → 3. So 3e^(3x)</div>
+          <div class="quiz-feedback wrong">✗ Chain rule: d/dx[e^(u)] = eᵘ · u'. Here u=3x, u'=3. Answer: 3e^(3x)</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q3.</strong> Product rule for <span class="math-inline">d/dx [x²·sin(x)]</span> = ?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2x·cos(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">2x·sin(x) + x²·cos(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">x²·cos(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2x·sin(x)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ f=x², f'=2x, g=sin x, g'=cos x → f'g+fg' = 2x·sin(x)+x²·cos(x)</div>
+          <div class="quiz-feedback wrong">✗ Product rule: f'g + fg' = (2x)(sin x) + (x²)(cos x)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MVT ===== -->
+    <div class="topic" id="topic-mvt">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(245,158,11,0.2);">⚖️</div>
+        <div>
+          <div class="topic-title">Mean Value Theorem & L'Hôpital's Rule</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.5</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>📐 Mean Value Theorem (MVT)</h3>
+        <div class="tip-box"><strong>Plain English:</strong> If you drive 100km in 1 hour, at some moment your speed was exactly 100km/h</div>
+        <div class="big-formula">∃c ∈ (a,b) such that f'(c) = [f(b)-f(a)] / (b-a)</div>
+        <p style="font-size:0.9rem;color:var(--muted);margin-top:0.5rem">Requirements: f continuous on [a,b] AND differentiable on (a,b)</p>
+      </div>
+      <div class="concept-box">
+        <h3>🏥 L'Hôpital's Rule</h3>
+        <div class="tip-box"><strong>When to use:</strong> Limit gives 0/0 or ∞/∞ form</div>
+        <div class="big-formula">lim(x→a) f(x)/g(x) = lim(x→a) f'(x)/g'(x)</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example</div>
+          <div class="example-body">
+            <div class="example-question"><span class="math-inline">lim(x→0) sin(x)/x</span> — this gives 0/0!</div>
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Apply L'Hôpital: differentiate top and bottom separately</p><div class="math-block">= lim(x→0) cos(x)/1 = cos(0) = 1</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> <span class="math-inline">lim(x→0) (e^x - 1)/x</span> using L'Hôpital?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">0</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">e</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">∞</button>
+          </div>
+          <div class="quiz-feedback correct">✓ 0/0 form → L'Hôpital: d/dx[eˣ-1] = eˣ, d/dx[x] = 1 → eˣ/1 at x=0 = 1</div>
+          <div class="quiz-feedback wrong">✗ It's 0/0 at x=0. L'Hôpital: differentiate top & bottom → eˣ/1 → 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INVERSE FUNCTIONS ===== -->
+    <div class="topic" id="topic-inverse-fn">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(6,182,212,0.2);">↩️</div>
+        <div>
+          <div class="topic-title">Inverse Functions</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.6</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 What is an Inverse Function?</h3>
+        <div class="tip-box">If f takes x → y, then f⁻¹ takes y → x</div>
+        <div class="math-block">f(x) = 2x  →  f⁻¹(x) = x/2<br>f(f⁻¹(x)) = x  and  f⁻¹(f(x)) = x</div>
+      </div>
+      <div class="concept-box">
+        <h3>📐 Inverse Trig Functions</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">arcsin range</div><div class="formula">[-π/2, π/2]</div></div>
+          <div class="formula-card"><div class="label">arccos range</div><div class="formula">[0, π]</div></div>
+          <div class="formula-card"><div class="label">arctan range</div><div class="formula">(-π/2, π/2)</div></div>
+          <div class="formula-card"><div class="label">d/dx arcsin(x)</div><div class="formula">1/√(1-x²)</div></div>
+          <div class="formula-card"><div class="label">d/dx arccos(x)</div><div class="formula">-1/√(1-x²)</div></div>
+          <div class="formula-card"><div class="label">d/dx arctan(x)</div><div class="formula">1/(1+x²)</div></div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">d/dx [arctan(x)]</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1/x</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">1/(1+x²)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-1/(1+x²)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1/√(1-x²)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Classic formula to memorize: d/dx[arctan(x)] = 1/(1+x²)</div>
+          <div class="quiz-feedback wrong">✗ d/dx[arctan(x)] = 1/(1+x²) — memorize this!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CURVE SKETCHING ===== -->
+    <div class="topic" id="topic-curve-sketch">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(16,185,129,0.2);">✏️</div>
+        <div>
+          <div class="topic-title">Curve Sketching</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.7</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>🗺️ Sketching Checklist</h3>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-content"><p><strong>Domain:</strong> Where is f defined?</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><p><strong>Intercepts:</strong> x-intercepts (f=0), y-intercept (x=0)</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><p><strong>Symmetry:</strong> Even (f(-x)=f(x)), Odd (f(-x)=-f(x))</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-content"><p><strong>Asymptotes:</strong> Vertical (where denominator=0), Horizontal (limit as x→±∞)</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-content"><p><strong>f':</strong> Find where f'=0 (critical points). f'>0 = increasing, f'&lt;0 = decreasing</p></div></div>
+          <div class="step"><div class="step-num">6</div><div class="step-content"><p><strong>f'':</strong> f''>0 = concave up (∪), f''&lt;0 = concave down (∩)</p></div></div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> If f'(x) > 0 on (a,b), the function is...</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'correct')">Increasing on (a,b)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Decreasing on (a,b)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Concave up on (a,b)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Has a maximum at some point in (a,b)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Positive derivative = function going up = increasing</div>
+          <div class="quiz-feedback wrong">✗ f'(x) > 0 means slope is positive means increasing</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> f''(x) < 0 on an interval means the curve is...</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Concave up (like ∪)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">Concave down (like ∩)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Decreasing</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">Increasing</button>
+          </div>
+          <div class="quiz-feedback correct">✓ f'' < 0 → concave down (∩). f'' > 0 → concave up (∪)</div>
+          <div class="quiz-feedback wrong">✗ f'' > 0 is concave UP (∪). f'' < 0 is concave DOWN (∩)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INTEGRATION ===== -->
+    <div class="topic" id="topic-integration">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(124,58,237,0.2);">∫</div>
+        <div>
+          <div class="topic-title">Integration</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.8</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Key Idea</h3>
+        <div class="tip-box"><strong>Integral = Area under the curve</strong> (or reverse of differentiation)</div>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Power Rule (∫)</div><div class="formula">∫ xⁿ dx = xⁿ⁺¹/(n+1) + C</div></div>
+          <div class="formula-card"><div class="label">∫ eˣ dx</div><div class="formula">eˣ + C</div></div>
+          <div class="formula-card"><div class="label">∫ sin x dx</div><div class="formula">-cos x + C</div></div>
+          <div class="formula-card"><div class="label">∫ cos x dx</div><div class="formula">sin x + C</div></div>
+          <div class="formula-card"><div class="label">∫ 1/x dx</div><div class="formula">ln|x| + C</div></div>
+          <div class="formula-card"><div class="label">∫ 1/(1+x²) dx</div><div class="formula">arctan(x) + C</div></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>🔄 Integration by Substitution</h3>
+        <div class="tip-box"><strong>When to use:</strong> You see a function and its derivative inside the integral</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — ∫ 2x·cos(x²) dx</div>
+          <div class="example-body">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Let u = x². Then du = 2x dx</p></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><div class="math-block">∫ 2x·cos(x²) dx = ∫ cos(u) du</div></div></div>
+              <div class="step"><div class="step-num">3</div><div class="step-content"><div class="math-block">= sin(u) + C = sin(x²) + C</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>🤝 Integration by Parts</h3>
+        <div class="big-formula">∫ u dv = uv - ∫ v du</div>
+        <div class="tip-box"><strong>LIATE rule:</strong> Choose u from: Logarithm, Inverse trig, Algebraic, Trig, Exponential</div>
+        <div class="example-card">
+          <div class="example-header">📝 Example — ∫ x·eˣ dx</div>
+          <div class="example-body">
+            <div class="steps">
+              <div class="step"><div class="step-num">1</div><div class="step-content"><p>Choose u = x (algebraic), dv = eˣ dx</p><div class="math-block">du = dx,  v = eˣ</div></div></div>
+              <div class="step"><div class="step-num">2</div><div class="step-content"><div class="math-block">∫ x·eˣ dx = x·eˣ - ∫ eˣ dx = x·eˣ - eˣ + C = eˣ(x-1) + C</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div onclick="window.open('https://www.youtube.com/results?search_query=integration+by+substitution+parts+calculus','_blank')" class="video-link">
+        <div class="video-icon">▶️</div>
+        <div><div class="video-text">Watch: Integration Techniques</div><div class="video-sub">Khan Academy — Substitution & Parts</div></div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check — Integration</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">∫ 3x² dx</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">3x + C</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">6x + C</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">x³ + C</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">x³/3 + C</button>
+          </div>
+          <div class="quiz-feedback correct">✓ ∫ 3x² dx = 3 · x³/3 + C = x³ + C</div>
+          <div class="quiz-feedback wrong">✗ Power rule: ∫ axⁿ dx = a·xⁿ⁺¹/(n+1). So 3·x³/3 = x³ + C</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q2.</strong> For <span class="math-inline">∫ sin(3x) dx</span>, what substitution works?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'correct')">u = 3x</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">u = sin(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">u = 3</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">u = x²</button>
+          </div>
+          <div class="quiz-feedback correct">✓ u=3x → du=3dx → (1/3)∫sin(u)du = (-1/3)cos(3x)+C</div>
+          <div class="quiz-feedback wrong">✗ Let u=3x, then du=3dx, so dx=du/3. Integral becomes (1/3)∫sin(u)du</div>
+        </div>
+        <div class="quiz-question">
+          <p><strong>Q3.</strong> <span class="math-inline">∫₀¹ x dx = ?</span></p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">1/2</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">0</button>
+          </div>
+          <div class="quiz-feedback correct">✓ [x²/2]₀¹ = 1/2 - 0 = 1/2 (half the area of a 1×1 square)</div>
+          <div class="quiz-feedback wrong">✗ Antiderivative of x is x²/2. Evaluate: [x²/2] from 0 to 1 = 1/2 - 0 = 1/2</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LOG & EXP ===== -->
+    <div class="topic" id="topic-log-exp">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(16,185,129,0.2);">📊</div>
+        <div>
+          <div class="topic-title">Logarithms & Exponentials</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.9</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Key Facts</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Natural log definition</div><div class="formula">ln(x) = ∫₁ˣ 1/t dt</div></div>
+          <div class="formula-card"><div class="label">Inverse relationship</div><div class="formula">e^(ln x) = x  and  ln(eˣ) = x</div></div>
+          <div class="formula-card"><div class="label">Log rules</div><div class="formula">ln(ab) = ln(a)+ln(b)</div></div>
+          <div class="formula-card"><div class="label">Power log</div><div class="formula">ln(aⁿ) = n·ln(a)</div></div>
+          <div class="formula-card"><div class="label">d/dx ln(x)</div><div class="formula">1/x</div></div>
+          <div class="formula-card"><div class="label">Logarithmic differentiation</div><div class="formula">Take ln of both sides first</div></div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-header">📝 Logarithmic Differentiation — d/dx [xˣ]</div>
+        <div class="example-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><p>Let y = xˣ. Take ln of both sides:</p><div class="math-block">ln y = x·ln x</div></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><p>Differentiate both sides (implicit diff on left):</p><div class="math-block">(1/y)·y' = ln x + x·(1/x) = ln x + 1</div></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content"><div class="math-block">y' = y·(ln x + 1) = xˣ(ln x + 1)</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> <span class="math-inline">d/dx [ln(x²+1)]</span> = ?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">1/(x²+1)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">2x/(x²+1)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">ln(2x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">2/(x²+1)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ Chain rule: d/dx[ln u] = (1/u)·u'. Here u=x²+1, u'=2x → 2x/(x²+1)</div>
+          <div class="quiz-feedback wrong">✗ Chain rule: d/dx[ln(u)] = u'/u. So u'=2x, giving 2x/(x²+1)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HYPERBOLIC ===== -->
+    <div class="topic" id="topic-hyperbolic">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:rgba(239,68,68,0.2);">🔀</div>
+        <div>
+          <div class="topic-title">Hyperbolic Functions</div>
+          <div class="topic-subtitle"><span class="tag tag-calculus">Calculus Ch.10</span></div>
+        </div>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Definitions</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">sinh x</div><div class="formula">(eˣ - e⁻ˣ)/2</div></div>
+          <div class="formula-card"><div class="label">cosh x</div><div class="formula">(eˣ + e⁻ˣ)/2</div></div>
+          <div class="formula-card"><div class="label">tanh x</div><div class="formula">sinh(x)/cosh(x)</div></div>
+          <div class="formula-card"><div class="label">Key identity</div><div class="formula">cosh²x - sinh²x = 1</div></div>
+          <div class="formula-card"><div class="label">d/dx sinh(x)</div><div class="formula">cosh(x)</div></div>
+          <div class="formula-card"><div class="label">d/dx cosh(x)</div><div class="formula">sinh(x)</div></div>
+        </div>
+        <div class="tip-box"><strong>Note:</strong> Similar to trig but no negatives — and the identity is cosh² - sinh² = 1 (not +1 like trig!)</div>
+      </div>
+      <div class="quiz-section">
+        <h3>✅ Self Check</h3>
+        <div class="quiz-question">
+          <p><strong>Q1.</strong> What is <span class="math-inline">d/dx [cosh(x)]</span>?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="answer(this,'wrong')">-sinh(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'correct')">sinh(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">cosh(x)</button>
+            <button class="quiz-opt" onclick="answer(this,'wrong')">tanh(x)</button>
+          </div>
+          <div class="quiz-feedback correct">✓ d/dx[cosh x] = sinh x. (Note: d/dx[cos x] = -sin x but hyperbolic has NO minus!)</div>
+          <div class="quiz-feedback wrong">✗ Unlike cos→ -sin, hyperbolic: d/dx[cosh x] = +sinh x (no minus sign!)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EXAM TIPS ===== -->
+    <div class="topic" id="topic-exam-tips">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(239,68,68,0.3));">⭐</div>
+        <div>
+          <div class="topic-title">Exam Tips & Strategy</div>
+          <div class="topic-subtitle"><span class="tag tag-exam">Final Exam = 50%</span> 2 hours, Möbius platform</div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🎯 Assessment Breakdown</h3>
+        <div class="formula-grid">
+          <div class="formula-card"><div class="label">Weekly Lessons</div><div class="formula">10% — easy marks, aim 100%</div></div>
+          <div class="formula-card"><div class="label">Lab Tests (×2)</div><div class="formula">30% — practice bank first!</div></div>
+          <div class="formula-card"><div class="label">Assignment</div><div class="formula">10% — show clear working</div></div>
+          <div class="formula-card"><div class="label">Final Exam</div><div class="formula">50% — 2 hours, focus here!</div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🔥 Top Things to Memorize</h3>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-content"><p>All derivative rules: power, chain, product, quotient + trig, log, exp, inverse trig</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><p>Integration formulas especially ∫1/x = ln|x|, ∫eˣ = eˣ, ∫1/(1+x²) = arctan(x)</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><p>IVT statement and how to apply it</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-content"><p>MVT statement: f'(c) = [f(b)-f(a)]/(b-a)</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-content"><p>Complex numbers: polar form, De Moivre's, Euler's formula</p></div></div>
+          <div class="step"><div class="step-num">6</div><div class="step-content"><p>Gaussian elimination — practice 3×3 systems!</p></div></div>
+          <div class="step"><div class="step-num">7</div><div class="step-content"><p>Dot product, cross product formulas</p></div></div>
+          <div class="step"><div class="step-num">8</div><div class="step-content"><p>cosh²x - sinh²x = 1 (hyperbolic identity)</p></div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>⚡ Exam Strategy</h3>
+        <div class="steps">
+          <div class="step"><div class="step-num">✓</div><div class="step-content"><p>Do ALL Lab Test practice questions until you can solve them in under 2 minutes each</p></div></div>
+          <div class="step"><div class="step-num">✓</div><div class="step-content"><p>Practice past exams — the course outline says exams from 2020+ are most relevant</p></div></div>
+          <div class="step"><div class="step-num">✓</div><div class="step-content"><p>Weekly Lessons = free marks. Always complete them!</p></div></div>
+          <div class="step"><div class="step-num">✓</div><div class="step-content"><p>If stuck in exam: skip, come back. Don't waste time on one question.</p></div></div>
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h3>🧠 Final Boss: Common Exam Question Types</h3>
+        <div class="math-block">
+          1. Find derivative using chain/product/quotient rules<br>
+          2. Integrate using substitution or by parts<br>
+          3. Use IVT to prove a root exists<br>
+          4. Apply L'Hôpital's rule for 0/0 limits<br>
+          5. Solve a 3×3 linear system by Gaussian elimination<br>
+          6. Find nth roots of complex numbers using De Moivre<br>
+          7. Find equation of a plane from 3 points<br>
+          8. Sketch a curve using f' and f'' tests
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('topic-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  // scroll main to top
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function answer(btn, result) {
+  // find parent quiz-question
+  const q = btn.closest('.quiz-question');
+  // disable all options
+  q.querySelectorAll('.quiz-opt').forEach(b => {
+    b.classList.add('disabled');
+    b.onclick = null;
+  });
+  // mark this button
+  btn.classList.add(result);
+  // show feedback
+  const fb = q.querySelector('.quiz-feedback.' + result);
+  if(fb) { fb.classList.add('show'); }
+}
+</script>
+</body>
+</html>
